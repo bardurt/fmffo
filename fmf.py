@@ -10,7 +10,7 @@ if '--listall' in sys.argv:
     csv_file = f'fmf{default_year}.csv'
     try:
         data = pd.read_csv(csv_file, on_bad_lines='warn')
-        unique_types = data['type'].dropna().unique()
+        unique_types = sorted(data['type'].dropna().unique(), key=str.lower)
         print("Available types:")
         for t in unique_types:
             print(t)
