@@ -5,7 +5,7 @@ The project contains data that has been scraped from [Faroe Fish Market](https:/
 Included in the project is a python script that allows the user to analyze the compiled data.
 
 ## Overview
-| csv | python    | 
+| CSV Data | Python Script | 
 | :---:   | :---: |
 | ![Demo2](img/demo2.png) | ![Demo1](img/demo1.png)
 
@@ -21,7 +21,7 @@ The script will prompt you for an item to plot
 ```
 Enter the type to plot (default: 'Hysa 1 MSC'): [INPUT YOUR ITEM HERE, ex : Toskur 1]
 ```
-After the item, the script will ask for a year (At the moment data is only available for 2025)
+After the item, the script will ask for a year (**at the moment data is only available for 2025**)
 ```
 Enter the year to plot (default: '2025'): 
 
@@ -37,12 +37,12 @@ Plotting data for: Toskur 1, year 2025
 
 ### Listing Available Types
 
-To list all available `types` execute this command
+To display all available **types**, run:
 
 ```
 python fmf.py --listall
 ```
-and the script will output all unique types
+and the script will output all **unique** types
 ```
 Available types:
 Hysa 1 MSC
