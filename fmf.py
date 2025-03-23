@@ -1,9 +1,24 @@
+import sys
 import pandas as pd
 import matplotlib.pyplot as plt
 
 
 default_year = '2025'
 default_type = 'Hysa 1 MSC'
+
+if '--listall' in sys.argv:
+    csv_file = f'fmf{default_year}.csv'
+    try:
+        data = pd.read_csv(csv_file, on_bad_lines='warn')
+        unique_types = data['type'].dropna().unique()
+        print("Available types:")
+        for t in unique_types:
+            print(t)
+    except Exception as e:
+        print(f"Error loading file: {e}")
+    sys.exit(0)
+
+
 selected_type = input(f"Enter the type to plot (default: '{default_type}'): ").strip() or default_type
 selected_year = input(f"Enter the year to plot (default: '{default_year}'): ").strip() or default_year
 print(f"Plotting data for: {selected_type}, year {selected_year}")

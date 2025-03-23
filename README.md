@@ -13,7 +13,7 @@ Included in the project is a python script that allows the user to analyze the c
 
 Execute the command
 ```
-python3 fmf.py
+python fmf.py
 ```
 
 The script will prompt you for an item to plot
@@ -30,3 +30,36 @@ Script will start to analyse the data based on the input given
 Plotting data for: Toskur 1, year 2025
 ```
 ![Demo](img/demo1.png)
+
+
+---
+<br/>
+<br/>
+
+To list all availbale `types` execute this command
+
+```
+python fmf.py --listall
+```
+and the script will ouput all unique types
+```
+Available types:
+Hysa 1 MSC
+Hysa 2 MSC
+Hysa 3 MSC
+Hysa 4 MSC
+Hysa MSC
+Toskur 1
+Toskur 2
+Toskur 3
+Toskur 4
+Toskur 5
+Hvitlingur
+Upsi 1 MSC
+Upsi 2 MSC
+Upsi 1-2 MSC
+Upsi 3 MSC
+Upsi 4 MSC
+Upsi 5 MSC
+.....
+```
