@@ -73,7 +73,7 @@ else:
         ax_vp.barh(price_bins[:-1], volume_profile, height=np.diff(price_bins), color='#00b2eb', alpha=0.7)
         ax_vp.invert_yaxis()
         ax_vp.set_ylim(y_min, y_max)
-        ax_vp.set_xticks(np.linspace(min(volume_profile), max(volume_profile), num=5))
+        ax_vp.set_xticks([])  
         ax_vp.set_title("Volume Profile", fontsize=12)
         ax_vp.set_ylabel('Price (kr)', fontsize=12)
     else:
