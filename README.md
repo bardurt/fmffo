@@ -31,7 +31,7 @@ Show Volume Profile Y / N (Default: Y)
 ```
 Script will start to analyze the data based on the input given
 ```
-Plotting data for: Hysa 1 MSC, years 2025, volume profile: True
+Plotting data for: Toskur 1, years 2025, volume profile: True
 ```
 ![Demo](img/demo1.png)
 
