@@ -28,7 +28,7 @@ for year in selected_years:
     csv_file = f'data/fmf{year}.csv'
     try:
         df = pd.read_csv(csv_file, on_bad_lines='warn')
-        df['year'] = year  # Track year in data
+        df['year'] = year 
         data_frames.append(df)
     except pd.errors.ParserError as e:
         print(f"ParserError for {year}: {e}")
@@ -51,22 +51,37 @@ if selected_data.empty:
 else:
     selected_data['date'] = pd.to_datetime(selected_data['date'], format='%Y%m%d')
     selected_data = selected_data.sort_values('date')
-    
-    dates = selected_data['date']
+
+    selected_data['index'] = range(len(selected_data))
+
+    indices = selected_data['index']
     avg_prices = selected_data['avg price']
     max_prices = selected_data['max price']
     min_prices = selected_data['min price']
+    kg_values = selected_data['kg']
+    date_labels = selected_data['date'].dt.strftime('%Y-%m-%d')
 
-    plt.figure(figsize=(12, 7))
-    plt.plot(dates, max_prices, marker='^', linestyle='-', color='r', label='Max Price')
-    plt.plot(dates, avg_prices, marker='o', linestyle='-', color='b', label='Avg Price')
-    plt.plot(dates, min_prices, marker='v', linestyle='-', color='g', label='Min Price')
-    
-    plt.title(f'Price Trends of {selected_type} Over Time', fontsize=14)
-    plt.xlabel('Date', fontsize=12)
-    plt.ylabel('Price (kr)', fontsize=12)
-    plt.xticks(rotation=45)
-    plt.grid(True, linestyle='--', alpha=0.7)
-    plt.legend()
+    fig, ax1 = plt.subplots(figsize=(12, 7))
+
+    ax1.vlines(indices, min_prices, max_prices, color='#dfa69e', linewidth=1.5, label='Min-Max Range')
+
+    ax1.plot(indices, avg_prices, color='black', linewidth=2, marker='o', markersize=4, label='Avg Price')
+
+    ax1.set_xlabel('Date', fontsize=12)
+    ax1.set_ylabel('Price (kr)', fontsize=12, color='black')
+    ax1.tick_params(axis='y', labelcolor='black')
+    ax1.grid(True, linestyle='--', alpha=0.7)
+
+    ax2 = ax1.twinx()
+    ax2.bar(indices, kg_values, alpha=0.3, color='#00b2eb', label='Kg', width=0.8)
+
+    ax2.set_ylabel('Kilograms (kg)', fontsize=12, color='black')
+    ax2.tick_params(axis='y', labelcolor='black')
+
+    step = 3  
+    ax1.set_xticks(indices[::step])
+    ax1.set_xticklabels(date_labels[::step], rotation=45)
+
+    plt.title(f'Price Trends for {selected_type}', fontsize=14)
     plt.tight_layout()
     plt.show()
