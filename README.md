@@ -21,14 +21,17 @@ The script will prompt you for an item to plot
 ```
 Enter the type to plot (default: 'Hysa 1 MSC'): [INPUT YOUR ITEM HERE, ex : Toskur 1]
 ```
-After the item, the script will ask for a year (**at the moment data is only available for 2025**)
+After the item, the script will ask for a year
 ```
 Enter the year to plot (default: '2025'): 
-
+```
+Finally, the script will ask for volume profile, if it should be activated or not
+```
+Show Volume Profile Y / N (Default: Y)
 ```
 Script will start to analyze the data based on the input given
 ```
-Plotting data for: Toskur 1, year 2025
+Plotting data for: Hysa 1 MSC, years 2025, volume profile: True
 ```
 ![Demo](img/demo1.png)
 
