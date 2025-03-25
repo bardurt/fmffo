@@ -24,7 +24,7 @@ selected_years = [year.strip() for year in selected_years.split(',')]
 volume_profile_input = input("Show Volume Profile Y / N (Default: Y): ").strip() or "Y"
 volume_profile_active = volume_profile_input.lower() == "y"
 
-print(f"Plotting data for: {selected_type}, years {', '.join(selected_years)}, volume profile: {volume_profile_active}")
+print(f"Plotting data for: {selected_type}, years {', '.join(selected_years)}")
 
 data_frames = []
 for year in selected_years:
@@ -63,27 +63,31 @@ else:
     kg_values = selected_data['kg']
     date_labels = selected_data['date'].dt.strftime('%Y-%m-%d')
     
-    fig, axes = plt.subplots(1, 2 if volume_profile_active else 1, figsize=(14, 7), gridspec_kw={'width_ratios': [1, 5] if volume_profile_active else [1]})
+    y_min = min(min_prices.min(), avg_prices.min())
+    y_max = max(max_prices.max(), avg_prices.max())
     
     if volume_profile_active:
-        ax_vp, ax1 = axes
-        price_bins = np.linspace(min(avg_prices), max(avg_prices), num=20)
+        fig, (ax_vp, ax1) = plt.subplots(1, 2, figsize=(14, 7), gridspec_kw={'width_ratios': [1, 5]})
+        price_bins = np.linspace(y_min, y_max, num=20)
         volume_profile = np.histogram(avg_prices, bins=price_bins, weights=kg_values)[0]
         ax_vp.barh(price_bins[:-1], volume_profile, height=np.diff(price_bins), color='#00b2eb', alpha=0.7)
         ax_vp.invert_yaxis()
-        ax_vp.set_xticks([])
-        ax_vp.set_yticks([])
+        ax_vp.set_ylim(y_min, y_max)
+        ax_vp.set_xticks(np.linspace(min(volume_profile), max(volume_profile), num=5))
         ax_vp.set_title("Volume Profile", fontsize=12)
+        ax_vp.set_ylabel('Price (kr)', fontsize=12)
     else:
-        ax1 = axes
+        fig, ax1 = plt.subplots(figsize=(12, 7))
     
     ax1.vlines(indices, min_prices, max_prices, color='#dfa69e', linewidth=1.5, label='Min-Max Range')
     ax1.plot(indices, avg_prices, color='black', linewidth=2, marker='o', markersize=4, label='Avg Price')
+    ax1.set_ylim(y_min, y_max) 
     ax1.set_xlabel('Date', fontsize=12)
     ax1.set_ylabel('Price (kr)', fontsize=12, color='black')
     ax1.tick_params(axis='y', labelcolor='black')
     ax1.grid(True, linestyle='--', alpha=0.7)
     
+    # Volume bars
     ax2 = ax1.twinx()
     ax2.bar(indices, kg_values, alpha=0.3, color='#00b2eb', label='Kg', width=0.8)
     ax2.set_ylabel('Kilograms (kg)', fontsize=12, color='black')
