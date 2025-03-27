@@ -9,15 +9,7 @@ selected_type = default_type
 selected_years = default_year
 volume_profile_active = True
 
-def fetch_data():
-    selected_type = input(f"Enter the type to plot (default: '{default_type}'): ").strip() or default_type
-    selected_years = input(f"Enter the years to plot (comma-separated, default: '{default_year}'): ").strip() or default_year
-    selected_years = [year.strip() for year in selected_years.split(',')]
-    volume_profile_input = input("Show Volume Profile Y / N (Default: Y): ").strip() or "Y"
-    volume_profile_active = volume_profile_input.lower() == "y"
-
-    print(f"Fetching data for: {selected_type}, years {', '.join(selected_years)}")
-
+def fetch_data(selected_years):
     data_frames = []
     for year in selected_years:
         csv_file = f'data/fmf{year}.csv'
@@ -39,7 +31,7 @@ def fetch_data():
 
     return data
 
-def plot_price_trend(data_frame):
+def plot_price_trend(data_frame, type):
     data_frame['date'] = pd.to_datetime(data_frame['date'], format='%Y%m%d')
     data_frame = data_frame.sort_values('date')
     
@@ -84,9 +76,28 @@ def plot_price_trend(data_frame):
     ax1.set_xticks(indices[::step])
     ax1.set_xticklabels(date_labels[::step], rotation=45)
     
-    plt.title(f'Price Trends for {selected_type}', fontsize=14)
+    plt.title(f'Price Trends for {type}', fontsize=14)
     plt.tight_layout()
     plt.show()
+
+def start(): 
+    selected_type = input(f"Enter the type to plot (default: '{default_type}'): ").strip() or default_type
+    selected_years = input(f"Enter the years to plot (comma-separated, default: '{default_year}'): ").strip() or default_year
+    selected_years = [year.strip() for year in selected_years.split(',')]
+    volume_profile_input = input("Show Volume Profile Y / N (Default: Y): ").strip() or "Y"
+    volume_profile_active = volume_profile_input.lower() == "y"
+
+    print(f"Fetching data for: {selected_type}, years {', '.join(selected_years)}")
+
+    raw = fetch_data(selected_years)
+    raw['type'] = raw['type'].str.strip()
+    selected_data = raw[raw['type'].str.lower() == selected_type.lower()].copy()
+
+    if selected_data.empty:
+        print(f"\nNo data found for '{selected_type}'. Available 'type' values:")
+        print(sorted(data['type'].dropna().unique(), key=str.lower))
+    else:
+        plot_price_trend(selected_data, selected_type)
 
 
 if '--listall' in sys.argv:
@@ -107,15 +118,8 @@ if '--listall' in sys.argv:
         print(f"Error loading file {csv_file}: {e}")
     sys.exit(0)
 
-raw = fetch_data()
-raw['type'] = raw['type'].str.strip()
-selected_data = raw[raw['type'].str.lower() == selected_type.lower()].copy()
 
-if selected_data.empty:
-    print(f"\nNo data found for '{selected_type}'. Available 'type' values:")
-    print(sorted(data['type'].dropna().unique(), key=str.lower))
-else:
-    plot_price_trend(selected_data)
+start()
 
 
 
