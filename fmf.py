@@ -5,6 +5,40 @@ import numpy as np
 
 default_year = '2025'
 default_type = 'Hysa 1 MSC'
+selected_type = default_type
+selected_years = default_year
+volume_profile_active = True
+
+def fetch_data():
+ selected_type = input(f"Enter the type to plot (default: '{default_type}'): ").strip() or default_type
+ selected_years = input(f"Enter the years to plot (comma-separated, default: '{default_year}'): ").strip() or default_year
+ selected_years = [year.strip() for year in selected_years.split(',')]
+ volume_profile_input = input("Show Volume Profile Y / N (Default: Y): ").strip() or "Y"
+ volume_profile_active = volume_profile_input.lower() == "y"
+
+ print(f"Fetching data for: {selected_type}, years {', '.join(selected_years)}")
+
+ data_frames = []
+ for year in selected_years:
+    csv_file = f'data/fmf{year}.csv'
+    try:
+        df = pd.read_csv(csv_file, on_bad_lines='warn')
+        df['year'] = year 
+        data_frames.append(df)
+    except pd.errors.ParserError as e:
+        print(f"ParserError for {year}: {e}")
+        continue
+    except Exception as e:
+        print(f"Error loading {csv_file}: {e}")
+        continue
+
+ if not data_frames:
+    raise Exception("No valid data files loaded.")
+
+ data = pd.concat(data_frames, ignore_index=True)
+
+ return data
+
 
 if '--listall' in sys.argv:
     listall_index = sys.argv.index('--listall')
@@ -24,35 +58,9 @@ if '--listall' in sys.argv:
         print(f"Error loading file {csv_file}: {e}")
     sys.exit(0)
 
-selected_type = input(f"Enter the type to plot (default: '{default_type}'): ").strip() or default_type
-selected_years = input(f"Enter the years to plot (comma-separated, default: '{default_year}'): ").strip() or default_year
-selected_years = [year.strip() for year in selected_years.split(',')]
-volume_profile_input = input("Show Volume Profile Y / N (Default: Y): ").strip() or "Y"
-volume_profile_active = volume_profile_input.lower() == "y"
-
-print(f"Plotting data for: {selected_type}, years {', '.join(selected_years)}")
-
-data_frames = []
-for year in selected_years:
-    csv_file = f'data/fmf{year}.csv'
-    try:
-        df = pd.read_csv(csv_file, on_bad_lines='warn')
-        df['year'] = year 
-        data_frames.append(df)
-    except pd.errors.ParserError as e:
-        print(f"ParserError for {year}: {e}")
-        continue
-    except Exception as e:
-        print(f"Error loading {csv_file}: {e}")
-        continue
-
-if not data_frames:
-    print("No valid data files loaded.")
-    sys.exit(1)
-
-data = pd.concat(data_frames, ignore_index=True)
-data['type'] = data['type'].str.strip()
-selected_data = data[data['type'].str.lower() == selected_type.lower()].copy()
+raw = fetch_data()
+raw['type'] = raw['type'].str.strip()
+selected_data = raw[raw['type'].str.lower() == selected_type.lower()].copy()
 
 if selected_data.empty:
     print(f"\nNo data found for '{selected_type}'. Available 'type' values:")
@@ -93,7 +101,6 @@ else:
     ax1.tick_params(axis='y', labelcolor='black')
     ax1.grid(True, linestyle='--', alpha=0.7)
     
-    # Volume bars
     ax2 = ax1.twinx()
     ax2.bar(indices, kg_values, alpha=0.3, color='#00b2eb', label='Kg', width=0.8)
     ax2.set_ylabel('Kilograms (kg)', fontsize=12, color='black')
@@ -106,3 +113,6 @@ else:
     plt.title(f'Price Trends for {selected_type}', fontsize=14)
     plt.tight_layout()
     plt.show()
+
+
+
