@@ -10,72 +10,46 @@ selected_years = default_year
 volume_profile_active = True
 
 def fetch_data():
- selected_type = input(f"Enter the type to plot (default: '{default_type}'): ").strip() or default_type
- selected_years = input(f"Enter the years to plot (comma-separated, default: '{default_year}'): ").strip() or default_year
- selected_years = [year.strip() for year in selected_years.split(',')]
- volume_profile_input = input("Show Volume Profile Y / N (Default: Y): ").strip() or "Y"
- volume_profile_active = volume_profile_input.lower() == "y"
+    selected_type = input(f"Enter the type to plot (default: '{default_type}'): ").strip() or default_type
+    selected_years = input(f"Enter the years to plot (comma-separated, default: '{default_year}'): ").strip() or default_year
+    selected_years = [year.strip() for year in selected_years.split(',')]
+    volume_profile_input = input("Show Volume Profile Y / N (Default: Y): ").strip() or "Y"
+    volume_profile_active = volume_profile_input.lower() == "y"
 
- print(f"Fetching data for: {selected_type}, years {', '.join(selected_years)}")
+    print(f"Fetching data for: {selected_type}, years {', '.join(selected_years)}")
 
- data_frames = []
- for year in selected_years:
-    csv_file = f'data/fmf{year}.csv'
-    try:
-        df = pd.read_csv(csv_file, on_bad_lines='warn')
-        df['year'] = year 
-        data_frames.append(df)
-    except pd.errors.ParserError as e:
-        print(f"ParserError for {year}: {e}")
-        continue
-    except Exception as e:
-        print(f"Error loading {csv_file}: {e}")
-        continue
+    data_frames = []
+    for year in selected_years:
+        csv_file = f'data/fmf{year}.csv'
+        try:
+            df = pd.read_csv(csv_file, on_bad_lines='warn')
+            df['year'] = year 
+            data_frames.append(df)
+        except pd.errors.ParserError as e:
+            print(f"ParserError for {year}: {e}")
+            continue
+        except Exception as e:
+            print(f"Error loading {csv_file}: {e}")
+            continue
 
- if not data_frames:
-    raise Exception("No valid data files loaded.")
+    if not data_frames:
+        raise Exception("No valid data files loaded.")
 
- data = pd.concat(data_frames, ignore_index=True)
+    data = pd.concat(data_frames, ignore_index=True)
 
- return data
+    return data
 
-
-if '--listall' in sys.argv:
-    listall_index = sys.argv.index('--listall')
-    if len(sys.argv) > listall_index + 1:
-        suffix = sys.argv[listall_index + 1]
-        csv_file = f'data/fmf{suffix}.csv'
-    else:
-        csv_file = f'data/fmf{default_year}.csv'
+def plot_price_trend(data_frame):
+    data_frame['date'] = pd.to_datetime(data_frame['date'], format='%Y%m%d')
+    data_frame = data_frame.sort_values('date')
     
-    try:
-        data = pd.read_csv(csv_file, on_bad_lines='warn')
-        unique_types = sorted(data['type'].dropna().unique(), key=str.lower)
-        print(f"Available types from {csv_file}:")
-        for t in unique_types:
-            print(t)
-    except Exception as e:
-        print(f"Error loading file {csv_file}: {e}")
-    sys.exit(0)
-
-raw = fetch_data()
-raw['type'] = raw['type'].str.strip()
-selected_data = raw[raw['type'].str.lower() == selected_type.lower()].copy()
-
-if selected_data.empty:
-    print(f"\nNo data found for '{selected_type}'. Available 'type' values:")
-    print(sorted(data['type'].dropna().unique(), key=str.lower))
-else:
-    selected_data['date'] = pd.to_datetime(selected_data['date'], format='%Y%m%d')
-    selected_data = selected_data.sort_values('date')
-    
-    selected_data['index'] = range(len(selected_data))
-    indices = selected_data['index']
-    avg_prices = selected_data['avg price']
-    max_prices = selected_data['max price']
-    min_prices = selected_data['min price']
-    kg_values = selected_data['kg']
-    date_labels = selected_data['date'].dt.strftime('%Y-%m-%d')
+    data_frame['index'] = range(len(data_frame))
+    indices = data_frame['index']
+    avg_prices = data_frame['avg price']
+    max_prices = data_frame['max price']
+    min_prices = data_frame['min price']
+    kg_values = data_frame['kg']
+    date_labels = data_frame['date'].dt.strftime('%Y-%m-%d')
     
     y_min = min(min_prices.min(), avg_prices.min())
     y_max = max(max_prices.max(), avg_prices.max())
@@ -113,6 +87,36 @@ else:
     plt.title(f'Price Trends for {selected_type}', fontsize=14)
     plt.tight_layout()
     plt.show()
+
+
+if '--listall' in sys.argv:
+    listall_index = sys.argv.index('--listall')
+    if len(sys.argv) > listall_index + 1:
+        suffix = sys.argv[listall_index + 1]
+        csv_file = f'data/fmf{suffix}.csv'
+    else:
+        csv_file = f'data/fmf{default_year}.csv'
+    
+    try:
+        data = pd.read_csv(csv_file, on_bad_lines='warn')
+        unique_types = sorted(data['type'].dropna().unique(), key=str.lower)
+        print(f"Available types from {csv_file}:")
+        for t in unique_types:
+            print(t)
+    except Exception as e:
+        print(f"Error loading file {csv_file}: {e}")
+    sys.exit(0)
+
+raw = fetch_data()
+raw['type'] = raw['type'].str.strip()
+selected_data = raw[raw['type'].str.lower() == selected_type.lower()].copy()
+
+if selected_data.empty:
+    print(f"\nNo data found for '{selected_type}'. Available 'type' values:")
+    print(sorted(data['type'].dropna().unique(), key=str.lower))
+else:
+    plot_price_trend(selected_data)
+
 
 
 
