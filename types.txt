@@ -1,0 +1,216 @@
+allur
+Annar råffskur
+Blalonga
+Blalonga fryst
+Blalonga fryst MSC
+Blandad rogn
+Blandað rogn
+Blandaó rogn
+Blålonga
+Brosma
+Brosma 0 - 1 kg fryst
+Brosma 0 - 1 kg fryst MSC
+Brosma 1 - 2 kg fryst
+Brosma 1 - 2 kg fryst MSC
+Brosma 1 MSC
+Brosma 2 kg + fryst
+Brosma 2 kg + fryst MSC
+Brosma 2 kg+ fryst MSC
+Brosma 2 MSC
+Brosma 3 MSC
+Brosma 4 MSC
+Brosma fryst
+Brosma fryst MSC
+Brosma MSC
+Eydlar
+Havtaska
+Havtaska (sek.)
+Havtaska 1
+Havtaska 2
+Havtaska 3
+Havtaska 4
+Havtaska 5
+Havtaska MSC
+Havtaskuhalar
+Havtaskuhalar fryst
+Havtaskuhalar fryst MSC
+Havtaskulivur
+Havur
+Hogguslokkur
+Hvasskvoysa
+Hvitingur
+Hvitingur fryst
+Hyasskvoysa
+Hysa 0 - 0.5 kg fryst MSC
+Hysa 0.5 - 0.8 kg fryst MSC
+Hysa 0.8 - 1.5 kg fryst MSC
+Hysa 1 MSC
+Hysa 1.5 kg + fryst MSC
+Hysa 1.5 kg+ fryst MSC
+Hysa 2 MSC
+Hysa 3 MSC
+Hysa 4 MSC
+Hysa fryst MSC
+Hysa MSC
+Hysurogn MSC
+Kalvi 1
+Kalvi 1-4 kg fryst
+Kalvi 10-40 kg fryst
+Kalvi 2
+Kalvi 3
+Kalvi 4
+Kalvi 40 kg + fryst
+Kalvi 5
+Kalví 1-4 kg fryst
+Kalví 3
+Kalví 4
+Kongafiskur
+Kongafiskur 1
+Kongafiskur 1 kg + fryst
+Kongafiskur 1 kg + fryst MSC
+Kongafiskur 2
+Kongafiskur 3
+Kongafiskur 4
+Kongafiskur fryst
+Kongafiskur fryst MSC
+Lalla
+Langspor
+Liri
+Liri 0-3 kg fryst
+Liri 3 kg + fryst
+Liri fryst
+Longa
+Longa 0 - 2 kg fryst
+Longa 0 - 2 kg fryst MSC
+Longa 1
+Longa 1 MSC
+Longa 1-2
+Longa 1-2 MSC
+Longa 2
+Longa 2 - 4 fryst MSC
+Longa 2 - 4 kg fryst
+Longa 2 - 4 kg fryst MSC
+Longa 2 MSC
+Longa 3
+Longa 3 MSC
+Longa 4
+Longa 4 kg + fryst
+Longa 4 kg + fryst MSC
+Longa 4 kg+ fryst
+Longa 4 MSC
+Longa 5
+Longa 5 MSC
+Longa fryst
+Longa fryst MSC
+Longa MSC
+Longurogn
+Longurogn fryst MSC
+Longurogn MSC
+Lyr
+Lyrur
+Lytrur
+LyTur
+Líti
+Lítl
+Lýrur
+Makrelur
+Reydsproka
+Reydsproka 1
+Reydsproka 2
+Reydsproka 3
+Reyöspreka
+Rognkelsi
+Skaturavar
+Sketa
+Sketta
+Sketta fryst
+Sketuravar
+Skota
+Skota fryst
+Skotturavar
+Skoturavar
+Skoturavar fryst
+Skotuvar
+Skrubba
+Skøta
+Skøturavar
+Skútudravar
+Steinbftur
+Steinbifur
+Steinbitur
+Steinbitur fryst
+Steinbitur fryst MSC
+Steinbitur MSC
+Steinbítur
+Stinglaksur
+Svartkalva halar fryst
+Svartkalva hovd fryst
+Svartkalvi
+Svartkalvi (sek.)
+Svartkalvi 0-1 kg fryst
+Svartkalvi 1
+Svartkalvi 1-2 kg fryst
+Svartkalvi 2
+Svartkalvi 2-3 kg fryst
+Svartkalvi 3
+Svartkalvi 3-5 kg fryst
+Svartkalvi 4
+Svartkalvi 5
+Svartkalvi 5 kg + fryst
+Svartkalvi fryst
+Svartkalvi halar fryst
+Svartkalvi hovd fryst
+Toskarogn
+Toskarogn fryst
+Toskarogn fryst MSC
+Toskur
+Toskur 0.5 - 1.0 kg fryst
+Toskur 0.5 - 1.0 kg fryst MSC
+Toskur 1
+Toskur 1 MSC
+Toskur 1.0 - 2.5 kg fryst
+Toskur 1.0 - 2.5 kg fryst MSC
+Toskur 2
+Toskur 2 MSC
+Toskur 2.5 - 5.0 kg fryst
+Toskur 2.5 - 5.0 kg fryst MSC
+Toskur 3
+Toskur 3 MSC
+Toskur 4
+Toskur 4 MSC
+Toskur 5
+Toskur 5 kg + fryst
+Toskur 5 kg + fryst MSC
+Toskur 5 kg+ fryst
+Toskur 5 kg.+ fryst
+Toskur 5 MSC
+Toskur 7 kg + fryst
+Toskur 7 kg + fryst MSC
+Toskur 7 kg+ fryst
+Toskur 7 kg.+ fryst
+Toskur 7 kg.+ fryst MSC
+Toskur fryst
+Tunga
+Tunga 1
+Tunga 2
+Tunga 3
+Tyr
+Tyskur
+Tóli
+Upsarogn
+Upsarogn MSC
+Upsi
+Upsi 0 - 2.5 kg fryst MSC
+Upsi 1 MSC
+Upsi 1-2 MSC
+Upsi 2
+Upsi 2 MSC
+Upsi 2.5 - 5.0 kg fryst MSC
+Upsi 3 MSC
+Upsi 4 MSC
+Upsi 5 kg + fryst MSC
+Upsi 5 MSC
+Upsi 6 MSC
+Upsi fryst
+Upsi fryst MSC
+Upsi MSC

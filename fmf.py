@@ -88,7 +88,33 @@ def plot_price_trend(data_frame, type):
     plt.tight_layout()
     plt.show()
 
-def start(): 
+
+def plot_weight_trend(data_frame, label):
+    data_frame[HEADER_DATE] = pd.to_datetime(data_frame[HEADER_DATE], format='%Y%m%d')
+    data_frame = data_frame.sort_values(HEADER_DATE)
+    
+    daily_weights = data_frame.groupby(HEADER_DATE)[HEADER_KG].sum().reset_index()
+    
+    plt.figure(figsize=(12, 6))
+    
+    plt.plot(
+        daily_weights[HEADER_DATE],
+        daily_weights[HEADER_KG],
+        linestyle='-',
+        color='blue',
+        label=f'Daily Weight for {label})'
+    )
+    
+    plt.title(f'Daily Weight Trend for {label}', fontsize=14)
+    plt.xlabel('Date', fontsize=12)
+    plt.ylabel('Total Weight (Kg)', fontsize=12)
+    plt.grid(True, linestyle='--', alpha=0.5)
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    
+    plt.show()
+
+def execute_price_analysis(): 
     selected_type = input(f"Enter the type to plot (default: '{default_type}'): ").strip() or default_type
     selected_years = input(f"Enter the years to plot (comma-separated, default: '{default_year}'): ").strip() or default_year
     selected_years = [year.strip() for year in selected_years.split(',')]
@@ -103,31 +129,53 @@ def start():
 
     if selected_data.empty:
         print(f"\nNo data found for '{selected_type}'. Available 'type' values:")
-        print(sorted(data[HEADER_TYPE].dropna().unique(), key=str.lower))
+        print(sorted(raw[HEADER_TYPE].dropna().unique(), key=str.lower))
     else:
         plot_price_trend(selected_data, selected_type)
+
+
+def execute_weight_analysis():
+    selected_type = input(f"Enter the type to plot (default: '{default_type}'): ").strip() or default_type
+    selected_years = input(f"Enter the years to plot (comma-separated, default: '{default_year}'): ").strip() or default_year
+    selected_years = [year.strip() for year in selected_years.split(',')]
+
+    print(f"Fetching data for: {selected_type}, years {', '.join(selected_years)}")
+
+    raw = fetch_data(selected_years)
+    raw[HEADER_TYPE] = raw[HEADER_TYPE].str.strip()
+    
+    if selected_type.lower() == "all":
+        selected_data = raw.copy()
+    else:
+        selected_data = raw[raw[HEADER_TYPE].str.lower().str.contains(selected_type.lower(), na=False)].copy()
+
+    if selected_data.empty:
+        print(f"\nNo data found for '{selected_type}'. Available 'type' values:")
+        print(sorted(raw[HEADER_TYPE].dropna().unique(), key=str.lower))
+    else:
+        plot_weight_trend(selected_data, selected_type)
 
 if __name__ == "__main__":
     if '--listall' in sys.argv:
         listall_index = sys.argv.index('--listall')
-        if len(sys.argv) > listall_index + 1:
-            suffix = sys.argv[listall_index + 1]
-            csv_file = f'data/fmf{suffix}.csv'
-        else:
-            csv_file = f'data/fmf{default_year}.csv'
         
-        try:
-            data = pd.read_csv(csv_file, on_bad_lines='warn')
-            unique_types = sorted(data[HEADER_TYPE].dropna().unique(), key=str.lower)
-            print(f"Available types from {csv_file}:")
-            for t in unique_types:
-                print(t)
-        except Exception as e:
-            print(f"Error loading file {csv_file}: {e}")
+        if len(sys.argv) > listall_index + 1:
+            years = sys.argv[listall_index + 1].split(',')
+        else:
+            years = [default_year]
+            
+        data = fetch_data(years)
+        unique_types = sorted(data[HEADER_TYPE].dropna().unique(), key=str.lower)
+        for t in unique_types:
+                    print(t)
+
         sys.exit(0)
 
     if '--price' in sys.argv:
-        start()
+        execute_price_analysis()
+
+    if '--weight' in sys.argv:
+        execute_weight_analysis()
 
         
 
