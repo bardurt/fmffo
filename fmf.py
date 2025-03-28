@@ -3,6 +3,14 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+HEADER_INDEX = 'index'
+HEADER_TYPE = 'type'
+HEADER_KG = 'kg'
+HEADER_DATE = 'date'
+HEADER_MIN_PRICE = 'min price'
+HEADER_AVG_PRICE = 'avg price'
+HEADER_MAX_PRICE = 'max price'
+
 default_year = '2025'
 default_type = 'Hysa 1 MSC'
 selected_type = default_type
@@ -32,19 +40,19 @@ def fetch_data(selected_years):
     return data
 
 def plot_price_trend(data_frame, type):
-    data_frame['date'] = pd.to_datetime(data_frame['date'], format='%Y%m%d')
-    data_frame = data_frame.sort_values('date')
+    data_frame[HEADER_DATE] = pd.to_datetime(data_frame[HEADER_DATE], format='%Y%m%d')
+    data_frame = data_frame.sort_values(HEADER_DATE)
     
-    data_frame['index'] = range(len(data_frame))
-    indices = data_frame['index']
-    avg_prices = data_frame['avg price']
-    max_prices = data_frame['max price']
-    min_prices = data_frame['min price']
-    kg_values = data_frame['kg']
-    date_labels = data_frame['date'].dt.strftime('%Y-%m-%d')
+    data_frame[HEADER_INDEX] = range(len(data_frame))
+    indices = data_frame[HEADER_INDEX]
+    avg_prices = data_frame[HEADER_AVG_PRICE]
+    max_prices = data_frame[HEADER_MAX_PRICE]
+    min_prices = data_frame[HEADER_MIN_PRICE]
+    kg_values = data_frame[HEADER_KG]
+    date_labels = data_frame[HEADER_DATE].dt.strftime('%Y-%m-%d')
     
-    y_min = min(min_prices.min(), avg_prices.min())
-    y_max = max(max_prices.max(), avg_prices.max())
+    y_min = min(min_prices.min(), avg_prices.min()) -1
+    y_max = max(max_prices.max(), avg_prices.max()) +1
     
     if volume_profile_active:
         fig, (ax_vp, ax1) = plt.subplots(1, 2, figsize=(14, 7), gridspec_kw={'width_ratios': [1, 5]})
@@ -90,12 +98,12 @@ def start():
     print(f"Fetching data for: {selected_type}, years {', '.join(selected_years)}")
 
     raw = fetch_data(selected_years)
-    raw['type'] = raw['type'].str.strip()
-    selected_data = raw[raw['type'].str.lower() == selected_type.lower()].copy()
+    raw[HEADER_TYPE] = raw[HEADER_TYPE].str.strip()
+    selected_data = raw[raw[HEADER_TYPE].str.lower() == selected_type.lower()].copy()
 
     if selected_data.empty:
         print(f"\nNo data found for '{selected_type}'. Available 'type' values:")
-        print(sorted(data['type'].dropna().unique(), key=str.lower))
+        print(sorted(data[HEADER_TYPE].dropna().unique(), key=str.lower))
     else:
         plot_price_trend(selected_data, selected_type)
 
@@ -110,7 +118,7 @@ if __name__ == "__main__":
         
         try:
             data = pd.read_csv(csv_file, on_bad_lines='warn')
-            unique_types = sorted(data['type'].dropna().unique(), key=str.lower)
+            unique_types = sorted(data[HEADER_TYPE].dropna().unique(), key=str.lower)
             print(f"Available types from {csv_file}:")
             for t in unique_types:
                 print(t)
