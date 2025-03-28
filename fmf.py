@@ -119,7 +119,29 @@ if '--listall' in sys.argv:
     sys.exit(0)
 
 
-start()
+if __name__ == "__main__":
+    if '--listall' in sys.argv:
+        listall_index = sys.argv.index('--listall')
+        if len(sys.argv) > listall_index + 1:
+            suffix = sys.argv[listall_index + 1]
+            csv_file = f'data/fmf{suffix}.csv'
+        else:
+            csv_file = f'data/fmf{default_year}.csv'
+        
+        try:
+            data = pd.read_csv(csv_file, on_bad_lines='warn')
+            unique_types = sorted(data['type'].dropna().unique(), key=str.lower)
+            print(f"Available types from {csv_file}:")
+            for t in unique_types:
+                print(t)
+        except Exception as e:
+            print(f"Error loading file {csv_file}: {e}")
+        sys.exit(0)
+
+    if '--price' in sys.argv:
+        start()
+
+        
 
 
 

@@ -14,7 +14,7 @@ Included in the project is a python script that allows the user to analyze the c
 
 Execute the command
 ```
-python fmf.py
+python fmf.py --price
 ```
 
 The script will prompt you for an item to plot
