@@ -21,7 +21,7 @@ The script relies on the following Python libraries:
 `numpy`: Used for numerical operations.
 
 #### Install the required libraries:
-you can install all the dependencies from the requirements.txt file using the following command:
+you can install all the dependencies from the **requirements.txt** file using the following command:
 ```
 pip install -r requirements.txt
 ```
