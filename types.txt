@@ -6,7 +6,6 @@ Blalonga fryst MSC
 Blandad rogn
 Blandað rogn
 Blandaó rogn
-Blålonga
 Brosma
 Brosma 0 - 1 kg fryst
 Brosma 0 - 1 kg fryst MSC
@@ -195,7 +194,6 @@ Tunga 1
 Tunga 2
 Tunga 3
 Tyr
-Tyskur
 Tóli
 Upsarogn
 Upsarogn MSC
