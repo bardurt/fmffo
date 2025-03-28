@@ -10,6 +10,22 @@ Included in the project is a python script that allows the user to analyze the c
 | ![Demo2](img/demo2.png) | ![Demo1](img/demo1.png)
 
 ## Usage
+
+### Prerequisites
+The script relies on the following Python libraries:
+
+`pandas`: Data manipulation and analysis.
+
+`matplotlib`: Plotting data on chart.
+
+`numpy`: Used for numerical operations.
+
+#### Install the required libraries:
+you can install all the dependencies from the requirements.txt file using the following command:
+```
+pip install -r requirements.txt
+```
+
 ### Running the script
 
 Execute the command
