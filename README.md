@@ -83,3 +83,8 @@ Upsi 4 MSC
 Upsi 5 MSC
 .....
 ```
+
+
+## Note
+The data is collected by an AI-powered crawler that decodes image files (JPEG, PNG) into CSV format. As a result, some text may have inconsistent spelling, particularly with Nordic characters, as the crawler may struggle with properly decoding these letters.
+
