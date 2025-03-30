@@ -192,6 +192,18 @@ if __name__ == "__main__":
     if '--weight' in sys.argv:
         execute_weight_analysis()
 
+    if '--dryrun' in sys.argv:
+        listall_index = sys.argv.index('--dryrun')
+        
+        if len(sys.argv) > listall_index + 1:
+            years = sys.argv[listall_index + 1].split(',')
+        else:
+            years = [default_year]
+            
+        data = fetch_data(years)
+
+        sys.exit(0)
+
         
 
 
