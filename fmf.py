@@ -171,6 +171,21 @@ if __name__ == "__main__":
 
         sys.exit(0)
 
+    if '--listdate' in sys.argv:
+        listall_index = sys.argv.index('--listdate')
+        
+        if len(sys.argv) > listall_index + 1:
+            years = sys.argv[listall_index + 1].split(',')
+        else:
+            years = [default_year]
+            
+        data = fetch_data(years)
+        unique_types = sorted(data[HEADER_DATE].dropna().unique())
+        for t in unique_types:
+                    print(t)
+
+        sys.exit(0)
+
     if '--price' in sys.argv:
         execute_price_analysis()
 
