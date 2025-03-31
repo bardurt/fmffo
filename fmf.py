@@ -68,7 +68,7 @@ def plot_price_trend(data_frame, type):
         fig, ax1 = plt.subplots(figsize=(12, 7))
     
     ax1.vlines(indices, min_prices, max_prices, color='#dfa69e', linewidth=1.5, label='Min-Max Range')
-    ax1.plot(indices, avg_prices, color='black', linewidth=2, marker='o', markersize=4, label='Avg Price')
+    ax1.plot(indices, avg_prices, color='black', linewidth=2, markersize=4, label='Avg Price')
     ax1.set_ylim(y_min, y_max) 
     ax1.set_xlabel('Date', fontsize=12)
     ax1.set_ylabel('Price (kr)', fontsize=12, color='black')
