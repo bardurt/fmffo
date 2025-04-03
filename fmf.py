@@ -2,6 +2,7 @@ import sys
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.ticker import MaxNLocator
 
 HEADER_INDEX = 'index'
 HEADER_TYPE = 'type'
@@ -97,21 +98,24 @@ def plot_weight_trend(data_frame, label):
     
     plt.figure(figsize=(12, 6))
     
-    plt.plot(
-        daily_weights[HEADER_DATE],
+    plt.bar(
+        daily_weights[HEADER_DATE].astype(str), 
         daily_weights[HEADER_KG],
-        linestyle='-',
         color='blue',
-        label=f'Daily Weight for {label})'
+        label=f'Daily Weight for {label}'
     )
     
     plt.title(f'Daily Weight Trend for {label}', fontsize=14)
     plt.xlabel('Date', fontsize=12)
     plt.ylabel('Total Weight (Kg)', fontsize=12)
     plt.grid(True, linestyle='--', alpha=0.5)
-    plt.xticks(rotation=45)
-    plt.tight_layout()
     
+    ax = plt.gca()
+    ax.xaxis.set_major_locator(MaxNLocator(nbins=10)) 
+
+    ax.set_xticklabels(daily_weights[HEADER_DATE].dt.strftime('%Y-%m-%d'), rotation=45)
+    
+    plt.tight_layout()
     plt.show()
 
 def execute_price_analysis(): 
@@ -153,11 +157,12 @@ def execute_weight_analysis():
         print(f"\nNo data found for '{selected_type}'. Available 'type' values:")
         print(sorted(raw[HEADER_TYPE].dropna().unique(), key=str.lower))
     else:
+        print(selected_data)
         plot_weight_trend(selected_data, selected_type)
 
 if __name__ == "__main__":
-    if '--listall' in sys.argv:
-        listall_index = sys.argv.index('--listall')
+    if '--listtype' in sys.argv:
+        listall_index = sys.argv.index('--listtype')
         
         if len(sys.argv) > listall_index + 1:
             years = sys.argv[listall_index + 1].split(',')
@@ -192,6 +197,7 @@ if __name__ == "__main__":
     if '--weight' in sys.argv:
         execute_weight_analysis()
 
+    # Command to run the script and validate the data correct formatting
     if '--dryrun' in sys.argv:
         listall_index = sys.argv.index('--dryrun')
         
