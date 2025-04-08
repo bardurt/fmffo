@@ -18,6 +18,25 @@ selected_type = default_type
 selected_years = default_year
 volume_profile_active = True
 
+def display_help():
+        print("""
+    Usage: script.py [options]
+
+    Options:
+        --listtype [years]     List all unique types (comma-separated years optional)
+        --listdate [years]     List all unique dates (comma-separated years optional)
+        --price                Execute price analysis
+        --weight               Execute weight analysis
+        --dryrun [years]       Validate data formatting (comma-separated years optional)
+        -h, --help             Show this help message
+
+    Examples:
+        script.py --listtype 2022,2023
+        script.py --price
+        script.py --dryrun 2023
+    """)
+
+
 def fetch_data(selected_years):
     data_frames = []
     for year in selected_years:
@@ -210,6 +229,9 @@ if __name__ == "__main__":
 
         sys.exit(0)
 
+    print("Error: No valid command provided\n")
+    display_help()
+    sys.exit(1)
         
 
 
