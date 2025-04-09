@@ -180,6 +180,11 @@ def execute_weight_analysis():
         plot_weight_trend(selected_data, selected_type)
 
 if __name__ == "__main__":
+
+    if len(sys.argv) == 1:
+        display_help()
+        sys.exit(0)
+
     if '--listtype' in sys.argv:
         listall_index = sys.argv.index('--listtype')
         
@@ -229,9 +234,13 @@ if __name__ == "__main__":
 
         sys.exit(0)
 
-    print("Error: No valid command provided\n")
-    display_help()
-    sys.exit(1)
+    if '--h' in sys.argv:
+        display_help()
+        sys.exit(1)
+
+    if '--help' in sys.argv:
+        display_help()
+        sys.exit(1)
         
 
 
