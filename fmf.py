@@ -4,6 +4,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.ticker import MaxNLocator
 
+LABEL_PRICE = 'Price (DKK)'
+LABEL_WEIGHT = 'KG'
+LABEL_DATE = 'Date'
+LABEL_HISTOGRAM = 'Histogram'
+
 HEADER_INDEX = 'index'
 HEADER_TYPE = 'type'
 HEADER_KG = 'kg'
@@ -82,22 +87,22 @@ def plot_price_trend(data_frame, type):
         ax_vp.invert_yaxis()
         ax_vp.set_ylim(y_min, y_max)
         ax_vp.set_xticks([])  
-        ax_vp.set_title("Volume Profile", fontsize=12)
-        ax_vp.set_ylabel('Price (kr)', fontsize=12)
+        ax_vp.set_title(LABEL_HISTOGRAM, fontsize=12)
+        ax_vp.set_ylabel(LABEL_PRICE, fontsize=12)
     else:
         fig, ax1 = plt.subplots(figsize=(12, 7))
     
     ax1.vlines(indices, min_prices, max_prices, color='#dfa69e', linewidth=1.5, label='Min-Max Range')
     ax1.plot(indices, avg_prices, color='black', linewidth=2, markersize=4, label='Avg Price')
     ax1.set_ylim(y_min, y_max) 
-    ax1.set_xlabel('Date', fontsize=12)
-    ax1.set_ylabel('Price (kr)', fontsize=12, color='black')
+    ax1.set_xlabel(LABEL_DATE, fontsize=12)
+    ax1.set_ylabel(LABEL_PRICE, fontsize=12, color='black')
     ax1.tick_params(axis='y', labelcolor='black')
     ax1.grid(True, linestyle='--', alpha=0.7)
     
     ax2 = ax1.twinx()
     ax2.bar(indices, kg_values, alpha=0.3, color='#00b2eb', label='Kg', width=0.8)
-    ax2.set_ylabel('Kilograms (kg)', fontsize=12, color='black')
+    ax2.set_ylabel(LABEL_WEIGHT, fontsize=12, color='black')
     ax2.tick_params(axis='y', labelcolor='black')
     
     step = max(1, len(indices) // 10)
@@ -141,7 +146,7 @@ def execute_price_analysis():
     selected_type = input(f"Enter the type to plot (default: '{default_type}'): ").strip() or default_type
     selected_years = input(f"Enter the years to plot (comma-separated, default: '{default_year}'): ").strip() or default_year
     selected_years = [year.strip() for year in selected_years.split(',')]
-    volume_profile_input = input("Show Volume Profile Y / N (Default: Y): ").strip() or "Y"
+    volume_profile_input = input("Show Price Histogram Y / N (Default: Y): ").strip() or "Y"
     volume_profile_active = volume_profile_input.lower() == "y"
 
     print(f"Fetching data for: {selected_type}, years {', '.join(selected_years)}")
@@ -221,7 +226,6 @@ if __name__ == "__main__":
     if '--weight' in sys.argv:
         execute_weight_analysis()
 
-    # Command to run the script and validate the data correct formatting
     if '--dryrun' in sys.argv:
         listall_index = sys.argv.index('--dryrun')
         
