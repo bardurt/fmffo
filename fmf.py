@@ -21,7 +21,6 @@ default_year = '2025'
 default_type = 'Hysa 1 MSC'
 selected_type = default_type
 selected_years = default_year
-volume_profile_active = True
 print_max_min_price = False
 
 def display_help():
@@ -65,7 +64,7 @@ def fetch_data(selected_years):
 
     return data
 
-def plot_price_trend(data_frame, type):
+def plot_price_trend(data_frame, type, plot_histogram):
     data_frame[HEADER_DATE] = pd.to_datetime(data_frame[HEADER_DATE], format='%Y%m%d')
     data_frame = data_frame.sort_values(HEADER_DATE)
     
@@ -80,7 +79,7 @@ def plot_price_trend(data_frame, type):
     y_min = min(min_prices.min(), avg_prices.min()) -1
     y_max = max(max_prices.max(), avg_prices.max()) +1
     
-    if volume_profile_active:
+    if plot_histogram:
         fig, (ax_vp, ax1) = plt.subplots(1, 2, figsize=(14, 7), gridspec_kw={'width_ratios': [1, 5]})
         price_bins = np.linspace(y_min, y_max, num=20)
         volume_profile = np.histogram(avg_prices, bins=price_bins, weights=kg_values)[0]
@@ -150,7 +149,7 @@ def execute_price_analysis():
     selected_years = input(f"Enter the years to plot (comma-separated, default: '{default_year}'): ").strip() or default_year
     selected_years = [year.strip() for year in selected_years.split(',')]
     volume_profile_input = input("Show Price Histogram Y / N (Default: Y): ").strip() or "Y"
-    volume_profile_active = volume_profile_input.lower() == 'n'
+    volume_profile_active = volume_profile_input.lower() == 'y'
     show_all_prices = input("Show Min / Max prices Y / N (Default: N): ").strip() or "N"
     print_max_min_price = show_all_prices.lower() == 'y'
 
@@ -164,7 +163,7 @@ def execute_price_analysis():
         print(f"\nNo data found for '{selected_type}'. Available 'type' values:")
         print(sorted(raw[HEADER_TYPE].dropna().unique(), key=str.lower))
     else:
-        plot_price_trend(selected_data, selected_type)
+        plot_price_trend(selected_data, selected_type, volume_profile_active)
 
 
 def execute_weight_analysis():
