@@ -64,12 +64,13 @@ def fetch_data(selected_years):
 
     return data
 
-def plot_price_trend(data_frame, type, plot_histogram):
+def plot_price_trend(data_frame, type, plot_histogram, print_price_range, print_volume):
     data_frame[HEADER_DATE] = pd.to_datetime(data_frame[HEADER_DATE], format='%Y%m%d')
     data_frame = data_frame.sort_values(HEADER_DATE)
     
     data_frame[HEADER_INDEX] = range(len(data_frame))
     indices = data_frame[HEADER_INDEX]
+    print(data_frame)
     avg_prices = data_frame[HEADER_AVG_PRICE]
     max_prices = data_frame[HEADER_MAX_PRICE]
     min_prices = data_frame[HEADER_MIN_PRICE]
@@ -92,7 +93,7 @@ def plot_price_trend(data_frame, type, plot_histogram):
     else:
         fig, ax1 = plt.subplots(figsize=(12, 7))
     
-    if(print_max_min_price):
+    if(print_price_range):
         ax1.vlines(indices, min_prices, max_prices, color='#dfa69e', linewidth=1.5, label='Min-Max Range')
     
     ax1.plot(indices, avg_prices, color='black', linewidth=2, markersize=4, label='Avg Price')
@@ -102,10 +103,11 @@ def plot_price_trend(data_frame, type, plot_histogram):
     ax1.tick_params(axis='y', labelcolor='black')
     ax1.grid(True, linestyle='--', alpha=0.7)
     
-    ax2 = ax1.twinx()
-    ax2.bar(indices, kg_values, alpha=0.3, color='#00b2eb', label='Kg', width=0.8)
-    ax2.set_ylabel(LABEL_WEIGHT, fontsize=12, color='black')
-    ax2.tick_params(axis='y', labelcolor='black')
+    if(print_volume):
+        ax2 = ax1.twinx()
+        ax2.bar(indices, kg_values, alpha=0.3, color='#00b2eb', label='Kg', width=0.8)
+        ax2.set_ylabel(LABEL_WEIGHT, fontsize=12, color='black')
+        ax2.tick_params(axis='y', labelcolor='black')
     
     step = max(1, len(indices) // 10)
     ax1.set_xticks(indices[::step])
@@ -148,12 +150,14 @@ def execute_price_analysis():
     selected_type = input(f"Enter the type to plot (default: '{default_type}'): ").strip() or default_type
     selected_years = input(f"Enter the years to plot (comma-separated, default: '{default_year}'): ").strip() or default_year
     selected_years = [year.strip() for year in selected_years.split(',')]
-    volume_profile_input = input("Show Price Histogram Y / N (Default: Y): ").strip() or "Y"
-    volume_profile_active = volume_profile_input.lower() == 'y'
-    show_all_prices = input("Show Min / Max prices Y / N (Default: N): ").strip() or "N"
-    print_max_min_price = show_all_prices.lower() == 'y'
+    volume_profile_input = input("Show Price Histogram Y / N (Default: N): ").strip() or "N"
+    show_volume_profile = volume_profile_input.lower() == 'y'
+    show_all_prices_input = input("Show Min / Max prices Y / N (Default: N): ").strip() or "N"
+    show_all_prices = show_all_prices_input.lower() == 'y'
+    show_volume_input = input("Plot volume bars Y / N (Default: N): ").strip() or "N"
+    show_volume = show_volume_input.lower() == 'y'
 
-    print(f"Fetching data for: {selected_type}, years {', '.join(selected_years)}, Histogram : {volume_profile_active}")
+    print(f"Fetching data for: {selected_type}, years {', '.join(selected_years)}, Histogram : {show_volume_profile}")
 
     raw = fetch_data(selected_years)
     raw[HEADER_TYPE] = raw[HEADER_TYPE].str.strip()
@@ -163,7 +167,7 @@ def execute_price_analysis():
         print(f"\nNo data found for '{selected_type}'. Available 'type' values:")
         print(sorted(raw[HEADER_TYPE].dropna().unique(), key=str.lower))
     else:
-        plot_price_trend(selected_data, selected_type, volume_profile_active)
+        plot_price_trend(selected_data, selected_type, show_volume_profile, show_all_prices, show_volume)
 
 
 def execute_weight_analysis():
